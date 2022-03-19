@@ -5,6 +5,8 @@ import HelloWorld from './components/HelloWorld.vue'
 import BindModel from './components/BindModel.vue'
 import ClickCounter from './components/ClickCounter.vue';
 import VIF from './components/VIF.vue';
+import VFor from './components/VFor.vue';
+import Computed from './components/Computed.vue';
 </script>
 
 <template>
@@ -12,7 +14,9 @@ import VIF from './components/VIF.vue';
   <!-- <HelloWorld msg="Hello Vue 3 + Vite" /> -->
   <!-- <BindModel/> -->
   <!-- <ClickCounter/> -->
-  <VIF/>
+  <!-- <VIF/> -->
+  <!-- <VFor/> -->
+  <Computed/>
 </template>
 
 <style>
