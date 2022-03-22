@@ -1,7 +1,7 @@
 <template>
   <p>{{counter + counter2}}</p>
-  <button @click="counter++">클릭하면 숫자가 올라갑니다.</button>
-  <button @click="onClick">클릭하면 숫자가 올라갑니다.</button>
+  <button @click="counter++">홀</button>
+  <button @click="onClick">짝</button>
 </template>
 
 <script>

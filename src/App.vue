@@ -7,6 +7,7 @@ import ClickCounter from './components/ClickCounter.vue';
 import VIF from './components/VIF.vue';
 import VFor from './components/VFor.vue';
 import Computed from './components/Computed.vue';
+import VIFR from './components/VIFR.vue';
 </script>
 
 <template>
@@ -16,7 +17,8 @@ import Computed from './components/Computed.vue';
   <!-- <ClickCounter/> -->
   <!-- <VIF/> -->
   <!-- <VFor/> -->
-  <Computed/>
+  <!-- <Computed/> -->
+  <VIFR/>
 </template>
 
 <style>
