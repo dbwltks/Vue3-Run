@@ -49,11 +49,17 @@ export default {
     let FailExp = ref(0)
     let BonusPoint = ref(0)
     let PickValue = ref([])
+    let ResultValue = ref([])
+    let EqualValue = ref([])
+    let BingoCount = ref(0)
     return {
       Ticket,
       FailExp,
       BonusPoint,
       PickValue,
+      ResultValue,
+      EqualValue,
+      BingoCount,
     }
   },
   methods: {
@@ -127,7 +133,6 @@ export default {
       evt.preventDefault();
       for(let i=0; i<6; i++) {
         this.PickValue[i] = Math.ceil(Math.random()*2)
-        this.onClick(L_i)
       }
     },
     onReset: function(evt)  {
@@ -141,8 +146,29 @@ export default {
       } else if (this.PickValue == 0) {
         alert('선택 해주세요')
       } else {
-        alert('참여완료')
+        for(let i=0; i<6; i++) {
+          this.ResultValue[i] = Math.ceil(Math.random()*2)
+            if(this.ResultValue[i] == this.PickValue[i]) {
+              this.EqualValue[i] = 'O'
+              this.BingoCount += 1
+              } else {
+              this.EqualValue[i] = 'X'
+              this.BingoCount += -1
+            }
+        }
+        if (this.FailExp == 6) {
+          this.BonusPoint += 1
+          this.FailExp += -7
+        }
+        if(this.BingoCount == 6 || this.BingoCount == -6) {
+          this.EqualValue = '빙고'
+        }
+        // && 
+        alert("서버 : "+this.ResultValue+"\n선택 : "+this.PickValue+"\n결과 : "+this.EqualValue)
         this.Ticket += -1
+        this.FailExp += 1
+        this.BingoCount = 0
+        this.EqualValue = []
       }
     }
   },
