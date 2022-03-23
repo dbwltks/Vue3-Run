@@ -41,6 +41,7 @@
 import {ref} from 'vue'
 export default {
   // data(){
+    
   //   return {
   //   }
   // }
@@ -53,6 +54,8 @@ export default {
     let ResultValue = ref([])
     let EqualValue = ref([])
     let BingoCount = ref(0)
+    let ComValue = ref('')
+    let CheckList = ref(0)
     return {
       Ticket,
       FailExp,
@@ -62,6 +65,8 @@ export default {
       EqualValue,
       BingoCount,
       PickValue1,
+      ComValue,
+      CheckList,
     }
   },
   methods: {
@@ -116,36 +121,52 @@ export default {
       evt.preventDefault();
       if (this.Ticket == 0) {
         alert('참여권을 구매해주세요.')
-      } else if (this.PickValue == 0) {
-        alert('선택해주세요')
       } else {
+      for (let i=0; i<6; i++) {
+        if (this.PickValue[i] == null)  {
+          alert((i+1)+"번째 항목이 선택되지 않았습니다.")
+          this.CheckList = 1
+        }
+      }
+      if (this.CheckList == 0) {
         for(let i=0; i<6; i++) {
-          this.ResultValue[i] = Math.ceil(Math.random()*2)
-            if(this.ResultValue[i] == this.PickValue[i]) {
-              this.EqualValue[i] = 'O'
-              this.BingoCount += 1
-              } else {
-              this.EqualValue[i] = 'X'
-              this.BingoCount += -1
-            }
+        this.ResultValue[i] = Math.ceil(Math.random()*2)
+          if(this.ResultValue[i] == this.PickValue[i]) {
+            this.EqualValue[i] = 'O'
+            this.BingoCount += 1
+            } else {
+            this.EqualValue[i] = 'X'
+            this.BingoCount += -1
+          }
         }
         if (this.FailExp == 6) {
           this.BonusPoint += 1
           this.FailExp += -7
         }
         if(this.BingoCount == 6 || this.BingoCount == -6) {
-          this.EqualValue = '빙고'
+          this.ComValue = '빙고'
+        } else if (this.BingoCount == 4) {
+          this.ComValue = '6번중 5번성공'
+        } else if (this.BingoCount == -4) {
+          this.ComValue = '6번중 1번성공'
+        } else if (this.BingoCount == 2)  {
+          this.ComValue = '6번중 4번성공'
+        } else if (this.BingoCount == -2)  {
+          this.ComValue = '6번중 2번성공'
+        } else if (this.BingoCount == 0)  {
+          this.ComValue = '6번중 3번성공'
         }
         if(this.EqualValue != '빙고')  { //구매기회 +2
           this.FailExp += 1
         }
-        // && 
-        alert("서버 : "+this.ResultValue+"\n선택 : "+this.PickValue+"\n결과 : "+this.EqualValue)
+        alert("서버 : "+this.ResultValue+"\n선택 : "+this.PickValue+"\n결과 : "+this.EqualValue+"\n비교 : "+this.ComValue)
         this.Ticket += -1
-        // this.FailExp += 1
         this.BingoCount = 0
         this.EqualValue = []
-      }
+        this.ComValue = ''
+        }
+        this.CheckList = 0
+      } 
     }
   },
 }
