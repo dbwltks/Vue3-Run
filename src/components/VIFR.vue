@@ -103,6 +103,13 @@ export default {
     },
     onReset: function(evt)  {
       evt.preventDefault();
+      for (let i=0; i<6; i++) {
+        if (this.PickValue[i] == 1) {
+          this.onActive('._left_'+(i+1))
+        } else if (this.PickValue[i] == 2) {
+          this.onActive('._right_'+(i+1))
+        }
+      }
       this.PickValue = []
     },
     onStart: function(evt)  {
@@ -110,7 +117,7 @@ export default {
       if (this.Ticket == 0) {
         alert('참여권을 구매해주세요.')
       } else if (this.PickValue == 0) {
-        alert('선택 해주세요')
+        alert('선택해주세요')
       } else {
         for(let i=0; i<6; i++) {
           this.ResultValue[i] = Math.ceil(Math.random()*2)
