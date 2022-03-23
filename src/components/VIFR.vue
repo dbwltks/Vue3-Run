@@ -1,27 +1,27 @@
 <template>
   <p>{{PickValue}}</p>
-  <p v-if="counter < 5">5보다 작습니다</p>
-  <p v-else>5와 같거나 큽니다.</p>
+  <!-- <p v-if="counter < 5">5보다 작습니다</p> -->
+  <!-- <p v-else>5와 같거나 큽니다.</p> -->
   <button type="button" @click="Ticket++">참여권 1개 구매하기</button>
   <button type="button" @click="Ticket+=3">참여권 3개 구매하기</button>
   <br/>
-  <button type="button" class="_left" @click="onClick('L_1', $event)">니어포스트</button>
-  <button type="button" class="_right" @click="onClick('R_1', $event)">파포스트</button>
+  <button type="button" class="_left_1" @click="onClick('L_1', 1, 2, $event)">니어포스트</button>
+  <button type="button" class="_right_1" @click="onClick('R_1', 2, 1, $event)">파포스트</button>
   <br/>
-  <button type="button" @click="onClick('L_2', $event)">니어포스트</button>
-  <button type="button" @click="onClick('R_2', $event)">파포스트</button>
+  <button type="button" class="_left_2" @click="onClick('L_2', 1, 2, $event)">니어포스트</button>
+  <button type="button" class="_right_2" @click="onClick('R_2', 2, 1, $event)">파포스트</button>
   <br/>
-  <button type="button" @click="onClick('L_3', $event)">니어포스트</button>
-  <button type="button" @click="onClick('R_3', $event)">파포스트</button>
+  <button type="button" class="_left_3" @click="onClick('L_3', 1, 2, $event)">니어포스트</button>
+  <button type="button" class="_right_3" @click="onClick('R_3', 2, 1, $event)">파포스트</button>
   <br/>
-  <button type="button" @click="onClick('L_4', $event)">니어포스트</button>
-  <button type="button" @click="onClick('R_4', $event)">파포스트</button>
+  <button type="button" class="_left_4" @click="onClick('L_4', 1, 2, $event)">니어포스트</button>
+  <button type="button" class="_right_4" @click="onClick('R_4', 2, 1, $event)">파포스트</button>
   <br/>
-  <button type="button" @click="onClick('L_5', $event)">니어포스트</button>
-  <button type="button" @click="onClick('R_5', $event)">파포스트</button>
+  <button type="button" class="_left_5" @click="onClick('L_5', 1, 2, $event)">니어포스트</button>
+  <button type="button" class="_right_5" @click="onClick('R_5', 2, 1, $event)">파포스트</button>
   <br/>
-  <button type="button" @click="onClick('L_6', $event)">니어포스트</button>
-  <button type="button" @click="onClick('R_6', $event)">파포스트</button>
+  <button type="button" class="_left_6" @click="onClick('L_6', 1, 2, $event)">니어포스트</button>
+  <button type="button" class="_right_6" @click="onClick('R_6', 2, 1, $event)">파포스트</button>
   <br/>
   <button type="button" @click="onRandom">랜덤 선택</button>
   <button type="button" @click="onReset">초기화</button>
@@ -49,6 +49,7 @@ export default {
     let FailExp = ref(0)
     let BonusPoint = ref(0)
     let PickValue = ref([])
+    let PickValue1 = ref([])
     let ResultValue = ref([])
     let EqualValue = ref([])
     let BingoCount = ref(0)
@@ -60,79 +61,44 @@ export default {
       ResultValue,
       EqualValue,
       BingoCount,
+      PickValue1,
     }
   },
   methods: {
-    onClick: function(value, evt) {
-      switch(value) {
-        case 'L_1':
-          // evt.preventDefault();
-          this.PickValue[0] = 1
-          if(this.PickValue[0] == 1) {
-            alert('니어포스트 1')
-            document.querySelector('._left').classList.toggle('active')
-          } if (document.querySelector('._right').classList.toggle('active'))  {
-          document.querySelector('._right').classList.toggle('active')
+    onActive: function(value) {
+      document.querySelector(value).classList.toggle('active')
+    },
+    onClick: function(value, pick, Rpick, evt) {
+      for (let i =1; i <=6; i++)  {
+        if (value == 'L_'+i)  { //L_1 == L_1
+          if (this.PickValue[value[2]-1] == pick) {
+            return
+          } else if (this.PickValue[value[2]-1] == Rpick) {
+            this.onActive('._right_'+i)
           }
-          break
-        case 'R_1':
-          this.PickValue[0] = 2
-          if(this.PickValue[0] == 2) {
-            alert('파포스트 1')
-            document.querySelector('._right').classList.toggle('active')
-          } if (document.querySelector('._left').classList.toggle('active'))  {
-          document.querySelector('._left').classList.toggle('active')
+          this.onActive('._left_'+i)
+          this.PickValue[value[2]-1] = pick
+        }
+        if (value == 'R_'+i) {
+          if (this.PickValue[value[2]-1] == pick) {
+            return
+          } else if (this.PickValue[value[2]-1] == Rpick) {
+            this.onActive('._left_'+i)
           }
-          break
-        case 'L_2':
-          alert('니어포스트 2')
-          this.PickValue[1] = 1
-          break
-        case 'R_2':
-          alert('파포스트 2')
-          this.PickValue[1] = 2
-          break
-        case 'L_3':
-          alert('니어포스트 3')
-          this.PickValue[2] = 1
-          break
-        case 'R_3':
-          alert('파포스트 3')
-          this.PickValue[2] = 2
-          break
-        case 'L_4':
-          alert('니어포스트 4')
-          this.PickValue[3] = 1
-          break
-        case 'R_4':
-          alert('파포스트 4')
-          this.PickValue[3] = 2
-          break
-        case 'L_5':
-          alert('니어포스트 5')
-          this.PickValue[4] = 1
-          break
-        case 'R_5':
-          alert('파포스트 5')
-          this.PickValue[4] = 2
-          break
-        case 'L_6':
-          alert('니어포스트 6')
-          this.PickValue[5] = 1
-          break
-        case 'R_6':
-          alert('파포스트 6')
-          this.PickValue[5] = 2
-          break
-        default:
-          alert('오류')
-          break
+          this.onActive('._right_'+i)
+          this.PickValue[value[2]-1] = pick
+        }
       }
     },
     onRandom: function(evt) {
       evt.preventDefault();
       for(let i=0; i<6; i++) {
-        this.PickValue[i] = Math.ceil(Math.random()*2)
+        this.PickValue1[i] = Math.ceil(Math.random()*2)
+        if(this.PickValue1[i] == 1) {
+          this.onClick('L_'+(i+1), 1, 2)
+        } else if(this.PickValue1[i] == 2) {
+          this.onClick('R_'+(i+1), 2, 1)
+        }
       }
     },
     onReset: function(evt)  {
@@ -163,10 +129,13 @@ export default {
         if(this.BingoCount == 6 || this.BingoCount == -6) {
           this.EqualValue = '빙고'
         }
+        if(this.EqualValue != '빙고')  { //구매기회 +2
+          this.FailExp += 1
+        }
         // && 
         alert("서버 : "+this.ResultValue+"\n선택 : "+this.PickValue+"\n결과 : "+this.EqualValue)
         this.Ticket += -1
-        this.FailExp += 1
+        // this.FailExp += 1
         this.BingoCount = 0
         this.EqualValue = []
       }
@@ -176,17 +145,87 @@ export default {
 </script>
 
 <style>
-._left  {
-  color: black;
+:root {
+--text-color: black;
+--click-color: red;
 }
-._left.active  {
-  color: red;
+._left_1  {
+  color: var(--text-color);
 }
-._right  {
-  color: black;
+._left_1.active  {
+  color: var(--click-color);
 }
-._right.active  {
-  color: red;
+._right_1  {
+  color: var(--text-color);
 }
+._right_1.active  {
+  color: var(--click-color);
+}
+
+._left_2  {
+  color: var(--text-color);
+}
+._left_2.active  {
+  color: var(--click-color);
+}
+._right_2  {
+  color: var(--text-color);
+}
+._right_2.active  {
+  color: var(--click-color);
+}
+
+._left_3  {
+  color: var(--text-color);
+}
+._left_3.active  {
+  color: var(--click-color);
+}
+._right_3  {
+  color: var(--text-color);
+}
+._right_3.active  {
+  color: var(--click-color);
+}
+
+._left_4  {
+  color: var(--text-color);
+}
+._left_4.active  {
+  color: var(--click-color);
+}
+._right_4  {
+  color: var(--text-color);
+}
+._right_4.active  {
+  color: var(--click-color);
+}
+
+._left_5  {
+  color: var(--text-color);
+}
+._left_5.active  {
+  color: var(--click-color);
+}
+._right_5  {
+  color: var(--text-color);
+}
+._right_5.active  {
+  color: var(--click-color);
+}
+
+._left_6  {
+  color: var(--text-color);
+}
+._left_6.active  {
+  color: var(--click-color);
+}
+._right_6  {
+  color: var(--text-color);
+}
+._right_6.active  {
+  color: var(--click-color);
+}
+
 
 </style>
