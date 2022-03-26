@@ -33,10 +33,10 @@
   <hr/>
   <br/>
   <p>누적 실패 경험치 {{FailExp}}회(7회) -> 보유 키컨 포인트 {{BonusPoint}}P</p>
-  <button @click="onRandom">30포인트 교환하기</button>
-  <button @click="reset">20포인트 교환하기</button>
-  <button @click="onRandom">10포인트 교환하기</button>
-  <button @click="reset">2포인트 교환하기</button>
+  <button @click="onPointItem(30,$event)">30포인트 교환하기</button>
+  <button @click="onPointItem(20,$event)">20포인트 교환하기</button>
+  <button @click="onPointItem(10,$event)">10포인트 교환하기</button>
+  <button @click="onPointItem(2,$event)">2포인트 교환하기</button>
 </template>
 
 <script>
@@ -198,11 +198,28 @@ export default {
         this.IndemList = []
         }
         if (this.FailExp >= 7) {
-          this.BonusPoint += 1
+          this.BonusPoint += 100
           this.FailExp += -7
         }
         this.CheckList = 0
       } 
+    },
+    onPointItem: function(value, evt)  {
+      if (value == 30 && this.BonusPoint >= 30)  {
+        alert(this.PointItem[0]+'교환완료')
+        this.BonusPoint += -30
+      } else if (value == 20 && this.BonusPoint >= 20) {
+        alert(this.PointItem[1]+'교환완료')
+        this.BonusPoint += -20
+      } else if (value == 10 && this.BonusPoint >= 10) {
+        alert(this.PointItem[2]+'교환완료')
+        this.BonusPoint += -10
+      } else if (value == 2 && this.BonusPoint >= 2)  {
+        alert(this.PointItem[3]+'교환완료')
+        this.BonusPoint += -2
+      } else {
+        alert('포인트가 부족합니다.')
+      }
     }
   },
 }
