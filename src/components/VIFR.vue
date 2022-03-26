@@ -1,7 +1,9 @@
 <template>
-  <p>{{PickValue}}</p>
-  <!-- <p v-if="counter < 5">5보다 작습니다</p> -->
-  <!-- <p v-else>5와 같거나 큽니다.</p> -->
+  <p>참여 횟수 : {{TryCount}}</p>
+  <p>선택 : {{PickValue}}</p>
+  <button type="button" @click="Ticket++">참여내역</button>
+  <p>당첨명단 : </p>
+  <!-- <br/> -->
   <button type="button" @click="Ticket++">참여권 1개 구매하기</button>
   <button type="button" @click="Ticket+=3">참여권 3개 구매하기</button>
   <br/>
@@ -56,6 +58,15 @@ export default {
     let BingoCount = ref(0)
     let ComValue = ref('')
     let CheckList = ref(0)
+    let TryCount = ref(0)
+    let SSSItem = ref(['','[5강 확률 UP!]22TOTY ALL 강화 선수팩 (1강 ~5강)', '22TOTY, 22TOTY-N, 21UCL Top Price 120 선수팩 (5강, 99+)'])
+    let SSItem = ref(['','22TOTY, 22TOTY-N, 21UCL 포함 Top Price 상자 (3,5강)', '[키컨달인] 행운의 BP 카드 (18억 ~ 200억)'])
+    let SItem = ref(['','[키컨달인] 프리미엄 고수 상자', '[22TOTY, 21UCL 포함] 최종 OVR 102+ 선수팩 (5강)', '[키컨달인] 행운의 BP 카드 (7억 ~ 90억)'])
+    let AItem = ref(['','22TOTY, 22TOTY-N, 21UCL ALL 강화 선수팩 (1강 ~ 5강)', '22TOTY, 22TOTY-N, 21UCL 포함 Top Price 600 선수팩', '[키컨달인] 행운의 BP카드 (4.5억 ~ 30억)'])
+    let BItem = ref(['','[키컨달인] Top Price 상자 (최대 8강)', '[EBS 포함] 최종 OVR 102+ 선수팩 (최대 8강)', '[키컨달인] 행운의 BP 카드 (3억 ~ 10억)'])
+    let PointItem = ref(['1/N 스페셜판 SSS,SS 상자', '스페셜판 SSS,SS 상자', '스페셜판 SSS,SS,S 상자', '[고수 상자 기회 10%] 행운의 BP 카드 (1억 ~ 5억 BP)'])
+    let JoinItem = ref(['[키컨달인] 행운의 BP 카드 (100만 ~ 5억)'])
+    let IndemList = ref([])
     return {
       Ticket,
       FailExp,
@@ -67,6 +78,15 @@ export default {
       PickValue1,
       ComValue,
       CheckList,
+      TryCount,
+      SSSItem,
+      SSItem,
+      SItem,
+      AItem,
+      BItem,
+      PointItem,
+      JoinItem,
+      IndemList,
     }
   },
   methods: {
@@ -130,7 +150,7 @@ export default {
       }
       if (this.CheckList == 0) {
         for(let i=0; i<6; i++) {
-        this.ResultValue[i] = Math.ceil(Math.random()*2)
+          this.ResultValue[i] = Math.ceil(Math.random()*2)
           if(this.ResultValue[i] == this.PickValue[i]) {
             this.EqualValue[i] = 'O'
             this.BingoCount += 1
@@ -139,31 +159,47 @@ export default {
             this.BingoCount += -1
           }
         }
-        if (this.FailExp == 6) {
-          this.BonusPoint += 1
-          this.FailExp += -7
-        }
-        if(this.BingoCount == 6 || this.BingoCount == -6) {
-          this.ComValue = '빙고'
-        } else if (this.BingoCount == 4) {
-          this.ComValue = '6번중 5번성공'
-        } else if (this.BingoCount == -4) {
-          this.ComValue = '6번중 1번성공'
-        } else if (this.BingoCount == 2)  {
-          this.ComValue = '6번중 4번성공'
-        } else if (this.BingoCount == -2)  {
-          this.ComValue = '6번중 2번성공'
-        } else if (this.BingoCount == 0)  {
-          this.ComValue = '6번중 3번성공'
-        }
-        if(this.EqualValue != '빙고')  { //구매기회 +2
+        if(this.BingoCount == 6 || this.BingoCount == -6) { //SSS, 완벽한 선방!
+          this.ComValue = '[SSS] 빙고'
+          this.IndemList[0] = this.SSSItem[Math.ceil(Math.random()*2)]
+          this.IndemList[1] = this.JoinItem[0]
+        } else if (this.BingoCount == 4) { //SS, 거의 완벽한 선방! 실패경험치 +1
+          this.ComValue = '[SS] 6번 중 5번 성공!'
           this.FailExp += 1
+          this.IndemList[0] = this.SSItem[Math.ceil(Math.random()*2)]
+          this.IndemList[1] = this.JoinItem[0]
+        } else if (this.BingoCount == -4) { //B, 평균적 선방!  실패경험치 +5
+          this.ComValue = '[B] 6번 중 1번 성공!'
+          this.FailExp += 5
+          this.IndemList[0] = this.BItem[Math.ceil(Math.random()*3)]
+          this.IndemList[1] = this.JoinItem[0]
+        } else if (this.BingoCount == 2)  { //S, 성공적 선방! 실패경험치 +2
+          this.ComValue = '[S] 6번 중 4번 성공!'
+          this.FailExp += 2
+          this.IndemList[0] = this.SItem[Math.ceil(Math.random()*3)]
+          this.IndemList[1] = this.JoinItem[0]
+        } else if (this.BingoCount == -2)  { //B, 평균적 선방! 실패경험치 +4
+          this.ComValue = '[B] 6번 중 2번 성공!'
+          this.FailExp += 4
+          this.IndemList[0] = this.BItem[Math.ceil(Math.random()*3)]
+          this.IndemList[1] = this.JoinItem[0]
+        } else if (this.BingoCount == 0)  { //A, 절반의 선방! 실패경험치 +3
+          this.ComValue = '[A] 6번 중 3번 성공!'
+          this.FailExp += 3
+          this.IndemList[0] = this.AItem[Math.ceil(Math.random()*3)]
+          this.IndemList[1] = this.JoinItem[0]
         }
-        alert("서버 : "+this.ResultValue+"\n선택 : "+this.PickValue+"\n결과 : "+this.EqualValue+"\n비교 : "+this.ComValue)
+        alert("서버 : "+this.ResultValue+"\n선택 : "+this.PickValue+"\n비교 : "+this.EqualValue+"\n결과 : "+this.ComValue+"\n보상 : "+this.IndemList)
         this.Ticket += -1
         this.BingoCount = 0
         this.EqualValue = []
         this.ComValue = ''
+        this.TryCount += 1
+        this.IndemList = []
+        }
+        if (this.FailExp >= 7) {
+          this.BonusPoint += 1
+          this.FailExp += -7
         }
         this.CheckList = 0
       } 
@@ -254,6 +290,4 @@ export default {
 ._right_6.active  {
   color: var(--click-color);
 }
-
-
 </style>
