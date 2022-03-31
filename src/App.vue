@@ -8,6 +8,7 @@ import VIF from './components/VIF.vue';
 import VFor from './components/VFor.vue';
 import Computed from './components/Computed.vue';
 import VIFR from './components/VIFR.vue';
+import Date from './components/Date.vue';
 </script>
 
 <template>
@@ -18,7 +19,8 @@ import VIFR from './components/VIFR.vue';
   <!-- <VIF/> -->
   <!-- <VFor/> -->
   <!-- <Computed/> -->
-  <VIFR/>
+  <!-- <VIFR/> -->
+  <Date/>
 </template>
 
 <style>
